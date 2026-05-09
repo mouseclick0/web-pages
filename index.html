@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>로또 번호 추천</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;700&family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0f1419;
+      --surface: #1a2332;
+      --text: #e8eef5;
+      --muted: #8b9cb0;
+      --accent: #3d9cf5;
+      --accent-glow: rgba(61, 156, 245, 0.35);
+      --ball-yellow: #f5d547;
+      --ball-blue: #4a9eff;
+      --ball-red: #e85d5d;
+      --ball-gray: #8899aa;
+      --ball-green: #4ecf7a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Noto Sans KR", "DM Sans", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      background-image:
+        radial-gradient(ellipse 120% 80% at 50% -20%, rgba(61, 156, 245, 0.12), transparent),
+        radial-gradient(ellipse 80% 50% at 100% 50%, rgba(232, 93, 93, 0.06), transparent);
+    }
+
+    .card {
+      width: min(100%, 520px);
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 2rem 1.75rem;
+      box-shadow:
+        0 4px 24px rgba(0, 0, 0, 0.35),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+
+    h1 {
+      margin: 0 0 0.35rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      margin: 0 0 1.75rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .results {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      min-height: 4rem;
+    }
+
+    .line {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+      animation: lineIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+    }
+
+    .line:nth-child(1) { animation-delay: 0s; }
+    .line:nth-child(2) { animation-delay: 0.06s; }
+    .line:nth-child(3) { animation-delay: 0.12s; }
+    .line:nth-child(4) { animation-delay: 0.18s; }
+    .line:nth-child(5) { animation-delay: 0.24s; }
+
+    @keyframes lineIn {
+      from {
+        opacity: 0;
+        transform: translateX(-10px);
+      }
+    }
+
+    .line-label {
+      flex: 0 0 auto;
+      width: 4.25rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .balls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+      flex: 1;
+      justify-content: flex-start;
+    }
+
+    .ball {
+      width: 2.75rem;
+      height: 2.75rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+      font-variant-numeric: tabular-nums;
+      color: #fff;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+      box-shadow:
+        inset 0 -4px 8px rgba(0, 0, 0, 0.15),
+        0 4px 12px rgba(0, 0, 0, 0.25);
+      animation: pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+    }
+
+    .ball:nth-child(1) { animation-delay: 0.02s; }
+    .ball:nth-child(2) { animation-delay: 0.08s; }
+    .ball:nth-child(3) { animation-delay: 0.14s; }
+    .ball:nth-child(4) { animation-delay: 0.2s; }
+    .ball:nth-child(5) { animation-delay: 0.26s; }
+    .ball:nth-child(6) { animation-delay: 0.32s; }
+
+    @keyframes pop {
+      from {
+        opacity: 0;
+        transform: scale(0.4);
+      }
+    }
+
+    .ball.yellow { background: linear-gradient(145deg, #ffd54f, #e6a800); }
+    .ball.blue { background: linear-gradient(145deg, #64b5f6, #1565c0); }
+    .ball.red { background: linear-gradient(145deg, #ef9a9a, #c62828); }
+    .ball.gray { background: linear-gradient(145deg, #b0bec5, #546e7a); }
+    .ball.green { background: linear-gradient(145deg, #81c784, #2e7d32); }
+
+    .placeholder {
+      font-size: 0.9rem;
+      color: var(--muted);
+      text-align: center;
+      padding: 0.75rem 0;
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 12px;
+      padding: 0.95rem 1.25rem;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: #fff;
+      background: linear-gradient(160deg, #4da3f7, #2563c7);
+      box-shadow: 0 4px 20px var(--accent-glow);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    }
+
+    button:hover {
+      filter: brightness(1.06);
+      box-shadow: 0 6px 28px var(--accent-glow);
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .hint {
+      margin-top: 1.25rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>로또 번호 추천</h1>
+    <p class="subtitle">한 번에 게임 5개(각 6개 번호)를 무작위로 뽑습니다. (6/45)</p>
+
+    <div class="results" id="results" aria-live="polite">
+      <span class="placeholder" id="placeholder">아래 버튼을 눌러 5게임을 생성하세요.</span>
+    </div>
+
+    <button type="button" id="drawBtn">번호 추천 받기</button>
+
+    <p class="hint">이 페이지는 참고용이며, 당첨을 보장하지 않습니다.</p>
+  </main>
+
+  <script>
+    function pickLottoNumbers() {
+      const pool = Array.from({ length: 45 }, (_, i) => i + 1);
+      const picked = [];
+
+      for (let i = 0; i < 6; i++) {
+        const idx = Math.floor(Math.random() * pool.length);
+        picked.push(pool[idx]);
+        pool.splice(idx, 1);
+      }
+
+      return picked.sort((a, b) => a - b);
+    }
+
+    function ballClass(n) {
+      if (n <= 10) return "yellow";
+      if (n <= 20) return "blue";
+      if (n <= 30) return "red";
+      if (n <= 40) return "gray";
+      return "green";
+    }
+
+    const resultsEl = document.getElementById("results");
+    const drawBtn = document.getElementById("drawBtn");
+
+    const GAME_COUNT = 5;
+
+    drawBtn.addEventListener("click", () => {
+      resultsEl.innerHTML = "";
+
+      for (let g = 0; g < GAME_COUNT; g++) {
+        const nums = pickLottoNumbers();
+
+        const line = document.createElement("div");
+        line.className = "line";
+
+        const label = document.createElement("span");
+        label.className = "line-label";
+        label.textContent = "게임 " + (g + 1);
+
+        const row = document.createElement("div");
+        row.className = "balls";
+
+        nums.forEach((n, i) => {
+          const span = document.createElement("span");
+          span.className = "ball " + ballClass(n);
+          span.textContent = n;
+          span.style.animationDelay = (g * 0.06 + i * 0.05) + "s";
+          row.appendChild(span);
+        });
+
+        line.appendChild(label);
+        line.appendChild(row);
+        resultsEl.appendChild(line);
+      }
+    });
+  </script>
+</body>
+</html>
