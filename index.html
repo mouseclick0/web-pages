@@ -4,22 +4,59 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>로또 번호 추천</title>
+  <script>
+    (function () {
+      try {
+        var key = "web-pages-theme";
+        var stored = localStorage.getItem(key);
+        if (stored === "light" || stored === "dark") {
+          document.documentElement.setAttribute("data-theme", stored);
+        } else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) {
+          document.documentElement.setAttribute("data-theme", "light");
+        } else {
+          document.documentElement.setAttribute("data-theme", "dark");
+        }
+      } catch (e) {
+        document.documentElement.setAttribute("data-theme", "dark");
+      }
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;700&family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
+      color-scheme: dark;
       --bg: #0f1419;
       --surface: #1a2332;
       --text: #e8eef5;
       --muted: #8b9cb0;
       --accent: #3d9cf5;
       --accent-glow: rgba(61, 156, 245, 0.35);
-      --ball-yellow: #f5d547;
-      --ball-blue: #4a9eff;
-      --ball-red: #e85d5d;
-      --ball-gray: #8899aa;
-      --ball-green: #4ecf7a;
+      --card-border: rgba(255, 255, 255, 0.05);
+      --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+      --grad-a: rgba(61, 156, 245, 0.12);
+      --grad-b: rgba(232, 93, 93, 0.06);
+      --toggle-bg: rgba(255, 255, 255, 0.08);
+      --toggle-border: rgba(255, 255, 255, 0.12);
+      --toggle-hover: rgba(255, 255, 255, 0.12);
+    }
+
+    :root[data-theme="light"] {
+      color-scheme: light;
+      --bg: #e8eef3;
+      --surface: #ffffff;
+      --text: #14212e;
+      --muted: #5a6b7d;
+      --accent: #1d7ed6;
+      --accent-glow: rgba(29, 126, 214, 0.25);
+      --card-border: rgba(15, 30, 50, 0.08);
+      --card-shadow: 0 8px 32px rgba(20, 40, 70, 0.1);
+      --grad-a: rgba(61, 156, 245, 0.18);
+      --grad-b: rgba(232, 93, 93, 0.05);
+      --toggle-bg: rgba(20, 40, 70, 0.06);
+      --toggle-border: rgba(20, 40, 70, 0.12);
+      --toggle-hover: rgba(20, 40, 70, 0.1);
     }
 
     * {
@@ -37,8 +74,9 @@
       justify-content: center;
       padding: 1.5rem;
       background-image:
-        radial-gradient(ellipse 120% 80% at 50% -20%, rgba(61, 156, 245, 0.12), transparent),
-        radial-gradient(ellipse 80% 50% at 100% 50%, rgba(232, 93, 93, 0.06), transparent);
+        radial-gradient(ellipse 120% 80% at 50% -20%, var(--grad-a), transparent),
+        radial-gradient(ellipse 80% 50% at 100% 50%, var(--grad-b), transparent);
+      transition: background-color 0.25s ease, color 0.2s ease;
     }
 
     .card {
@@ -46,13 +84,46 @@
       background: var(--surface);
       border-radius: 20px;
       padding: 2rem 1.75rem;
-      box-shadow:
-        0 4px 24px rgba(0, 0, 0, 0.35),
-        0 0 0 1px rgba(255, 255, 255, 0.05);
+      box-shadow: var(--card-shadow), 0 0 0 1px var(--card-border);
+      transition: background-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .card-head h1 {
+      margin: 0;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .theme-toggle {
+      flex: 0 0 auto;
+      width: auto;
+      min-width: 7.5rem;
+      margin: 0;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text);
+      background: var(--toggle-bg);
+      border: 1px solid var(--toggle-border);
+      box-shadow: none;
+      border-radius: 10px;
+    }
+
+    .theme-toggle:hover {
+      filter: none;
+      background: var(--toggle-hover);
+      box-shadow: none;
     }
 
     h1 {
-      margin: 0 0 0.35rem;
       font-size: 1.5rem;
       font-weight: 700;
       letter-spacing: -0.02em;
@@ -156,7 +227,7 @@
       padding: 0.75rem 0;
     }
 
-    button {
+    .draw-btn {
       width: 100%;
       border: none;
       border-radius: 12px;
@@ -171,12 +242,12 @@
       transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
     }
 
-    button:hover {
+    .draw-btn:hover {
       filter: brightness(1.06);
       box-shadow: 0 6px 28px var(--accent-glow);
     }
 
-    button:active {
+    .draw-btn:active {
       transform: scale(0.98);
     }
 
@@ -191,14 +262,17 @@
 </head>
 <body>
   <main class="card">
-    <h1>로또 번호 추천</h1>
+    <div class="card-head">
+      <h1>로또 번호 추천</h1>
+      <button type="button" class="theme-toggle" id="themeToggle" aria-label="화이트 모드로 전환">화이트 모드</button>
+    </div>
     <p class="subtitle">한 번에 게임 5개(각 6개 번호)를 무작위로 뽑습니다. (6/45)</p>
 
     <div class="results" id="results" aria-live="polite">
       <span class="placeholder" id="placeholder">아래 버튼을 눌러 5게임을 생성하세요.</span>
     </div>
 
-    <button type="button" id="drawBtn">번호 추천 받기</button>
+    <button type="button" class="draw-btn" id="drawBtn">번호 추천 받기</button>
 
     <p class="hint">이 페이지는 참고용이며, 당첨을 보장하지 않습니다.</p>
   </main>
@@ -224,6 +298,35 @@
       if (n <= 40) return "gray";
       return "green";
     }
+
+    const THEME_KEY = "web-pages-theme";
+
+    function getTheme() {
+      return document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
+    }
+
+    function setTheme(theme) {
+      document.documentElement.setAttribute("data-theme", theme);
+      try {
+        localStorage.setItem(THEME_KEY, theme);
+      } catch (e) {}
+
+      var btn = document.getElementById("themeToggle");
+      if (!btn) return;
+      if (theme === "light") {
+        btn.textContent = "다크 모드";
+        btn.setAttribute("aria-label", "다크 모드로 전환");
+      } else {
+        btn.textContent = "화이트 모드";
+        btn.setAttribute("aria-label", "화이트 모드로 전환");
+      }
+    }
+
+    document.getElementById("themeToggle").addEventListener("click", function () {
+      setTheme(getTheme() === "dark" ? "light" : "dark");
+    });
+
+    setTheme(getTheme());
 
     const resultsEl = document.getElementById("results");
     const drawBtn = document.getElementById("drawBtn");
