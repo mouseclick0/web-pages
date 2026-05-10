@@ -93,9 +93,9 @@
     }
 
     .home-grid {
-      width: min(100%, 1080px);
+      width: min(100%, 520px);
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: 1fr;
       gap: 1.25rem;
     }
 
@@ -131,10 +131,6 @@
       font-size: 0.95rem;
       color: var(--muted);
       line-height: 1.6;
-    }
-
-    .youtube-hero {
-      color: #ff0033;
     }
 
     .theme-toggle {
@@ -266,10 +262,7 @@
     }
 
     .draw-btn,
-    .entry-btn,
-    .youtube-check-btn,
-    .save-info-btn,
-    .official-link {
+    .entry-btn {
       width: 100%;
       border: none;
       border-radius: 12px;
@@ -285,31 +278,14 @@
     }
 
     .draw-btn:hover,
-    .entry-btn:hover,
-    .youtube-check-btn:hover,
-    .save-info-btn:hover,
-    .official-link:hover {
+    .entry-btn:hover {
       filter: brightness(1.06);
       box-shadow: 0 6px 28px var(--accent-glow);
     }
 
     .draw-btn:active,
-    .entry-btn:active,
-    .youtube-check-btn:active,
-    .save-info-btn:active,
-    .official-link:active {
+    .entry-btn:active {
       transform: scale(0.98);
-    }
-
-    .official-link {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-    }
-
-    .save-info-btn {
-      margin-top: 0.75rem;
     }
 
     .back-btn {
@@ -335,112 +311,6 @@
       transform: scale(0.98);
     }
 
-    .youtube-form {
-      display: grid;
-      gap: 0.75rem;
-      margin-bottom: 1.25rem;
-    }
-
-    .url-input {
-      width: 100%;
-      border: 1px solid var(--toggle-border);
-      border-radius: 12px;
-      padding: 0.9rem 1rem;
-      font: inherit;
-      color: var(--text);
-      background: var(--toggle-bg);
-      outline: none;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    .url-input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-glow);
-    }
-
-    .video-info {
-      display: grid;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .video-card {
-      overflow: hidden;
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      background: var(--toggle-bg);
-    }
-
-    .video-thumb {
-      display: block;
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-      background: rgba(0, 0, 0, 0.15);
-    }
-
-    .video-meta {
-      padding: 1rem;
-    }
-
-    .video-meta h2 {
-      margin: 0 0 0.45rem;
-      font-size: 1rem;
-    }
-
-    .video-meta p,
-    .info-note {
-      margin: 0;
-      font-size: 0.82rem;
-      color: var(--muted);
-      line-height: 1.55;
-    }
-
-    .video-detail-list {
-      display: grid;
-      gap: 0.65rem;
-      padding: 1rem;
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      background: var(--toggle-bg);
-    }
-
-    .video-detail-row {
-      display: grid;
-      grid-template-columns: 6rem 1fr;
-      gap: 0.75rem;
-      align-items: start;
-      font-size: 0.86rem;
-      line-height: 1.5;
-    }
-
-    .video-detail-row dt {
-      color: var(--muted);
-      font-weight: 600;
-    }
-
-    .video-detail-row dd {
-      margin: 0;
-      min-width: 0;
-      overflow-wrap: anywhere;
-      color: var(--text);
-    }
-
-    .field-label {
-      display: grid;
-      gap: 0.4rem;
-      font-size: 0.85rem;
-      font-weight: 600;
-    }
-
-    .error {
-      min-height: 1.25rem;
-      margin: -0.25rem 0 0;
-      font-size: 0.8rem;
-      color: #ff8a8a;
-      line-height: 1.4;
-    }
-
     @media (max-width: 760px) {
       body {
         align-items: flex-start;
@@ -449,11 +319,6 @@
 
       .home-grid {
         grid-template-columns: 1fr;
-      }
-
-      .video-detail-row {
-        grid-template-columns: 1fr;
-        gap: 0.15rem;
       }
     }
 
@@ -509,19 +374,6 @@
       <p class="home-subtitle">6/45 로또 번호를 한 번에 5게임까지 추천합니다.</p>
       <button type="button" class="entry-btn" id="openLottoBtn">로또 번호 생성기</button>
     </section>
-
-    <section class="card home-card">
-      <div class="card-head">
-        <svg class="feature-hero youtube-hero" role="img" aria-label="유튜브 동영상 아이콘" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
-          <rect x="46" y="38" width="228" height="126" rx="30" fill="currentColor" />
-          <path d="M141 74l58 33-58 33V74z" fill="#ffffff" />
-          <circle cx="74" cy="54" r="16" fill="#ffffff" opacity="0.16" />
-          <circle cx="250" cy="142" r="20" fill="#000000" opacity="0.12" />
-        </svg>
-      </div>
-      <p class="home-subtitle">유튜브 URL을 입력해 썸네일과 제목 등 영상 정보를 확인합니다.</p>
-      <button type="button" class="entry-btn" id="openYoutubeBtn">유튜브 동영상 정보</button>
-    </section>
   </main>
 
   <main class="card" id="lottoView" hidden>
@@ -538,74 +390,6 @@
     <button type="button" class="back-btn" id="backHomeBtn">메인페이지로 돌아가기</button>
 
     <p class="hint">이 페이지는 참고용이며, 당첨을 보장하지 않습니다.</p>
-  </main>
-
-  <main class="card" id="youtubeView" hidden>
-    <div class="card-head">
-      <h1>유튜브 동영상 정보</h1>
-    </div>
-    <p class="subtitle">유튜브 URL을 입력하면 썸네일, 제목, 채널명 등 영상 정보를 확인할 수 있습니다.</p>
-
-    <form class="youtube-form" id="youtubeForm">
-      <label class="field-label" for="youtubeUrl">
-        유튜브 URL
-        <input class="url-input" id="youtubeUrl" type="url" placeholder="https://www.youtube.com/watch?v=..." autocomplete="url" required />
-      </label>
-      <label class="field-label" for="youtubeApiKey">
-        YouTube Data API 키
-        <input class="url-input" id="youtubeApiKey" type="password" placeholder="API 키를 입력하면 길이, 조회수, 업로드 날짜까지 표시됩니다." autocomplete="off" />
-      </label>
-      <button type="submit" class="youtube-check-btn">확인</button>
-      <p class="error" id="youtubeError" aria-live="polite"></p>
-    </form>
-
-    <div class="video-info" id="videoInfo" hidden>
-      <article class="video-card">
-        <img class="video-thumb" id="videoThumb" alt="유튜브 동영상 썸네일" />
-        <div class="video-meta">
-          <h2 id="videoTitle">유튜브 영상 정보</h2>
-          <p id="videoDesc"></p>
-        </div>
-      </article>
-
-      <dl class="video-detail-list">
-        <div class="video-detail-row">
-          <dt>제목</dt>
-          <dd id="detailTitle">-</dd>
-        </div>
-        <div class="video-detail-row">
-          <dt>채널</dt>
-          <dd id="detailChannel">-</dd>
-        </div>
-        <div class="video-detail-row">
-          <dt>영상 ID</dt>
-          <dd id="detailVideoId">-</dd>
-        </div>
-        <div class="video-detail-row">
-          <dt>영상길이</dt>
-          <dd id="detailDuration">API 키 필요</dd>
-        </div>
-        <div class="video-detail-row">
-          <dt>조회수</dt>
-          <dd id="detailViews">API 키 필요</dd>
-        </div>
-        <div class="video-detail-row">
-          <dt>업로드 날짜</dt>
-          <dd id="detailUploadDate">API 키 필요</dd>
-        </div>
-        <div class="video-detail-row">
-          <dt>공식 URL</dt>
-          <dd id="detailUrl">-</dd>
-        </div>
-      </dl>
-
-      <div>
-        <a class="official-link" id="officialLink" href="#" target="_blank" rel="noopener noreferrer">공식 YouTube에서 열기</a>
-        <p class="info-note">API 키는 이 브라우저에만 저장됩니다. 키가 없거나 조회에 실패하면 공개 oEmbed 정보로 가능한 항목만 표시합니다.</p>
-      </div>
-    </div>
-
-    <button type="button" class="back-btn" id="backHomeFromYoutubeBtn">메인페이지로 돌아가기</button>
   </main>
 
   <script>
@@ -661,160 +445,17 @@
 
     const homeView = document.getElementById("homeView");
     const lottoView = document.getElementById("lottoView");
-    const youtubeView = document.getElementById("youtubeView");
     const openLottoBtn = document.getElementById("openLottoBtn");
-    const openYoutubeBtn = document.getElementById("openYoutubeBtn");
     const backHomeBtn = document.getElementById("backHomeBtn");
-    const backHomeFromYoutubeBtn = document.getElementById("backHomeFromYoutubeBtn");
     const resultsEl = document.getElementById("results");
     const drawBtn = document.getElementById("drawBtn");
-    const youtubeForm = document.getElementById("youtubeForm");
-    const youtubeUrl = document.getElementById("youtubeUrl");
-    const youtubeApiKey = document.getElementById("youtubeApiKey");
-    const youtubeError = document.getElementById("youtubeError");
-    const videoInfo = document.getElementById("videoInfo");
-    const videoThumb = document.getElementById("videoThumb");
-    const videoTitle = document.getElementById("videoTitle");
-    const videoDesc = document.getElementById("videoDesc");
-    const detailTitle = document.getElementById("detailTitle");
-    const detailChannel = document.getElementById("detailChannel");
-    const detailVideoId = document.getElementById("detailVideoId");
-    const detailDuration = document.getElementById("detailDuration");
-    const detailViews = document.getElementById("detailViews");
-    const detailUploadDate = document.getElementById("detailUploadDate");
-    const detailUrl = document.getElementById("detailUrl");
-    const officialLink = document.getElementById("officialLink");
 
     const GAME_COUNT = 5;
-    const YOUTUBE_API_KEY = "web-pages-youtube-api-key";
-    let currentYoutubeVideo = null;
 
     function showView(view) {
       homeView.hidden = view !== homeView;
       lottoView.hidden = view !== lottoView;
-      youtubeView.hidden = view !== youtubeView;
     }
-
-    function extractYoutubeId(value) {
-      try {
-        const url = new URL(value.trim());
-        const host = url.hostname.replace(/^www\./, "");
-
-        if (host === "youtu.be") {
-          return url.pathname.split("/").filter(Boolean)[0] || null;
-        }
-
-        if (host === "youtube.com" || host === "m.youtube.com" || host === "music.youtube.com") {
-          if (url.pathname === "/watch") return url.searchParams.get("v");
-          if (url.pathname.startsWith("/shorts/") || url.pathname.startsWith("/embed/")) {
-            return url.pathname.split("/").filter(Boolean)[1] || null;
-          }
-        }
-      } catch (e) {
-        return null;
-      }
-
-      return null;
-    }
-
-    async function fetchYoutubeOembed(url) {
-      const endpoint = "https://www.youtube.com/oembed?format=json&url=" + encodeURIComponent(url);
-
-      try {
-        const response = await fetch(endpoint);
-        if (!response.ok) throw new Error("oEmbed request failed");
-        return await response.json();
-      } catch (e) {
-        return null;
-      }
-    }
-
-    async function fetchYoutubeData(videoId, apiKey) {
-      const endpoint = "https://www.googleapis.com/youtube/v3/videos"
-        + "?part=snippet,contentDetails,statistics"
-        + "&id=" + encodeURIComponent(videoId)
-        + "&key=" + encodeURIComponent(apiKey);
-
-      try {
-        const response = await fetch(endpoint);
-        if (!response.ok) throw new Error("YouTube Data API request failed");
-        const data = await response.json();
-        return data.items && data.items[0] ? data.items[0] : null;
-      } catch (e) {
-        return null;
-      }
-    }
-
-    function formatDuration(value) {
-      const match = /^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/.exec(value || "");
-      if (!match) return "정보 없음";
-
-      const hours = Number(match[1] || 0);
-      const minutes = Number(match[2] || 0);
-      const seconds = Number(match[3] || 0);
-      const parts = [];
-
-      if (hours) parts.push(hours + "시간");
-      if (minutes) parts.push(minutes + "분");
-      if (seconds || parts.length === 0) parts.push(seconds + "초");
-
-      return parts.join(" ");
-    }
-
-    function formatNumber(value) {
-      const number = Number(value || 0);
-      return Number.isFinite(number) ? number.toLocaleString("ko-KR") + "회" : "정보 없음";
-    }
-
-    function formatDate(value) {
-      const date = new Date(value);
-      if (Number.isNaN(date.getTime())) return "정보 없음";
-      return date.toLocaleDateString("ko-KR", {
-        year: "numeric",
-        month: "long",
-        day: "numeric"
-      });
-    }
-
-    function buildYoutubeInfo(videoId, oembed, apiItem) {
-      const officialUrl = "https://www.youtube.com/watch?v=" + videoId;
-      const snippet = apiItem && apiItem.snippet ? apiItem.snippet : null;
-      const contentDetails = apiItem && apiItem.contentDetails ? apiItem.contentDetails : null;
-      const statistics = apiItem && apiItem.statistics ? apiItem.statistics : null;
-      const thumbnails = snippet && snippet.thumbnails ? snippet.thumbnails : null;
-      const apiThumbnail = thumbnails && (thumbnails.maxres || thumbnails.standard || thumbnails.high || thumbnails.medium || thumbnails.default);
-
-      return {
-        id: videoId,
-        url: officialUrl,
-        title: snippet && snippet.title ? snippet.title : oembed && oembed.title ? oembed.title : "제목을 불러오지 못했습니다",
-        channel: snippet && snippet.channelTitle ? snippet.channelTitle : oembed && oembed.author_name ? oembed.author_name : "채널명을 불러오지 못했습니다",
-        thumbnail: apiThumbnail && apiThumbnail.url ? apiThumbnail.url : oembed && oembed.thumbnail_url ? oembed.thumbnail_url : "https://img.youtube.com/vi/" + videoId + "/hqdefault.jpg",
-        duration: contentDetails ? formatDuration(contentDetails.duration) : "API 키 필요",
-        views: statistics ? formatNumber(statistics.viewCount) : "API 키 필요",
-        uploadDate: snippet ? formatDate(snippet.publishedAt) : "API 키 필요"
-      };
-    }
-
-    function renderYoutubeInfo(info) {
-      currentYoutubeVideo = info;
-      videoThumb.src = info.thumbnail;
-      videoTitle.textContent = info.title;
-      videoDesc.textContent = "채널: " + info.channel + " · 영상 ID: " + info.id;
-      detailTitle.textContent = info.title;
-      detailChannel.textContent = info.channel;
-      detailVideoId.textContent = info.id;
-      detailDuration.textContent = info.duration;
-      detailViews.textContent = info.views;
-      detailUploadDate.textContent = info.uploadDate;
-      detailUrl.textContent = info.url;
-      officialLink.href = info.url;
-      videoInfo.hidden = false;
-    }
-
-    try {
-      youtubeApiKey.value = localStorage.getItem(YOUTUBE_API_KEY) || "";
-    } catch (e) {}
 
     openLottoBtn.addEventListener("click", () => {
       showView(lottoView);
@@ -824,51 +465,6 @@
     backHomeBtn.addEventListener("click", () => {
       showView(homeView);
       openLottoBtn.focus();
-    });
-
-    openYoutubeBtn.addEventListener("click", () => {
-      showView(youtubeView);
-      youtubeUrl.focus();
-    });
-
-    backHomeFromYoutubeBtn.addEventListener("click", () => {
-      showView(homeView);
-      openYoutubeBtn.focus();
-    });
-
-    youtubeForm.addEventListener("submit", async (event) => {
-      event.preventDefault();
-      youtubeError.textContent = "";
-
-      const videoId = extractYoutubeId(youtubeUrl.value);
-      if (!videoId) {
-        videoInfo.hidden = true;
-        currentYoutubeVideo = null;
-        youtubeError.textContent = "올바른 유튜브 URL을 입력해 주세요.";
-        youtubeUrl.focus();
-        return;
-      }
-
-      const apiKey = youtubeApiKey.value.trim();
-      if (apiKey) {
-        try {
-          localStorage.setItem(YOUTUBE_API_KEY, apiKey);
-        } catch (e) {}
-      }
-
-      youtubeError.textContent = "영상 정보를 불러오는 중입니다.";
-      const officialUrl = "https://www.youtube.com/watch?v=" + videoId;
-      const oembed = await fetchYoutubeOembed(officialUrl);
-      const apiItem = apiKey ? await fetchYoutubeData(videoId, apiKey) : null;
-
-      renderYoutubeInfo(buildYoutubeInfo(videoId, oembed, apiItem));
-      if (apiItem) {
-        youtubeError.textContent = "";
-      } else if (apiKey) {
-        youtubeError.textContent = "YouTube Data API 조회에 실패해 공개 정보만 표시했습니다. API 키와 제한 설정을 확인해 주세요.";
-      } else {
-        youtubeError.textContent = "API 키가 없어 길이, 조회수, 업로드 날짜는 표시하지 못했습니다.";
-      }
     });
 
     drawBtn.addEventListener("click", () => {
