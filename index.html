@@ -551,6 +551,10 @@
         유튜브 URL
         <input class="url-input" id="youtubeUrl" type="url" placeholder="https://www.youtube.com/watch?v=..." autocomplete="url" required />
       </label>
+      <label class="field-label" for="youtubeApiKey">
+        YouTube Data API 키
+        <input class="url-input" id="youtubeApiKey" type="password" placeholder="API 키를 입력하면 길이, 조회수, 업로드 날짜까지 표시됩니다." autocomplete="off" />
+      </label>
       <button type="submit" class="youtube-check-btn">확인</button>
       <p class="error" id="youtubeError" aria-live="polite"></p>
     </form>
@@ -579,15 +583,15 @@
         </div>
         <div class="video-detail-row">
           <dt>영상길이</dt>
-          <dd id="detailDuration">YouTube Data API 연동 필요</dd>
+          <dd id="detailDuration">API 키 필요</dd>
         </div>
         <div class="video-detail-row">
           <dt>조회수</dt>
-          <dd id="detailViews">YouTube Data API 연동 필요</dd>
+          <dd id="detailViews">API 키 필요</dd>
         </div>
         <div class="video-detail-row">
           <dt>업로드 날짜</dt>
-          <dd id="detailUploadDate">YouTube Data API 연동 필요</dd>
+          <dd id="detailUploadDate">API 키 필요</dd>
         </div>
         <div class="video-detail-row">
           <dt>공식 URL</dt>
@@ -597,7 +601,7 @@
 
       <div>
         <a class="official-link" id="officialLink" href="#" target="_blank" rel="noopener noreferrer">공식 YouTube에서 열기</a>
-        <p class="info-note">제목과 채널명은 YouTube oEmbed 정보로 표시합니다. 영상길이, 조회수, 업로드 날짜는 공식 YouTube Data API 키가 있어야 자동 조회할 수 있습니다.</p>
+        <p class="info-note">API 키는 이 브라우저에만 저장됩니다. 키가 없거나 조회에 실패하면 공개 oEmbed 정보로 가능한 항목만 표시합니다.</p>
       </div>
     </div>
 
@@ -666,6 +670,7 @@
     const drawBtn = document.getElementById("drawBtn");
     const youtubeForm = document.getElementById("youtubeForm");
     const youtubeUrl = document.getElementById("youtubeUrl");
+    const youtubeApiKey = document.getElementById("youtubeApiKey");
     const youtubeError = document.getElementById("youtubeError");
     const videoInfo = document.getElementById("videoInfo");
     const videoThumb = document.getElementById("videoThumb");
@@ -681,6 +686,7 @@
     const officialLink = document.getElementById("officialLink");
 
     const GAME_COUNT = 5;
+    const YOUTUBE_API_KEY = "web-pages-youtube-api-key";
     let currentYoutubeVideo = null;
 
     function showView(view) {
@@ -723,15 +729,70 @@
       }
     }
 
-    function buildYoutubeInfo(videoId, oembed) {
+    async function fetchYoutubeData(videoId, apiKey) {
+      const endpoint = "https://www.googleapis.com/youtube/v3/videos"
+        + "?part=snippet,contentDetails,statistics"
+        + "&id=" + encodeURIComponent(videoId)
+        + "&key=" + encodeURIComponent(apiKey);
+
+      try {
+        const response = await fetch(endpoint);
+        if (!response.ok) throw new Error("YouTube Data API request failed");
+        const data = await response.json();
+        return data.items && data.items[0] ? data.items[0] : null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function formatDuration(value) {
+      const match = /^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/.exec(value || "");
+      if (!match) return "정보 없음";
+
+      const hours = Number(match[1] || 0);
+      const minutes = Number(match[2] || 0);
+      const seconds = Number(match[3] || 0);
+      const parts = [];
+
+      if (hours) parts.push(hours + "시간");
+      if (minutes) parts.push(minutes + "분");
+      if (seconds || parts.length === 0) parts.push(seconds + "초");
+
+      return parts.join(" ");
+    }
+
+    function formatNumber(value) {
+      const number = Number(value || 0);
+      return Number.isFinite(number) ? number.toLocaleString("ko-KR") + "회" : "정보 없음";
+    }
+
+    function formatDate(value) {
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "정보 없음";
+      return date.toLocaleDateString("ko-KR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      });
+    }
+
+    function buildYoutubeInfo(videoId, oembed, apiItem) {
       const officialUrl = "https://www.youtube.com/watch?v=" + videoId;
+      const snippet = apiItem && apiItem.snippet ? apiItem.snippet : null;
+      const contentDetails = apiItem && apiItem.contentDetails ? apiItem.contentDetails : null;
+      const statistics = apiItem && apiItem.statistics ? apiItem.statistics : null;
+      const thumbnails = snippet && snippet.thumbnails ? snippet.thumbnails : null;
+      const apiThumbnail = thumbnails && (thumbnails.maxres || thumbnails.standard || thumbnails.high || thumbnails.medium || thumbnails.default);
 
       return {
         id: videoId,
         url: officialUrl,
-        title: oembed && oembed.title ? oembed.title : "제목을 불러오지 못했습니다",
-        channel: oembed && oembed.author_name ? oembed.author_name : "채널명을 불러오지 못했습니다",
-        thumbnail: oembed && oembed.thumbnail_url ? oembed.thumbnail_url : "https://img.youtube.com/vi/" + videoId + "/hqdefault.jpg"
+        title: snippet && snippet.title ? snippet.title : oembed && oembed.title ? oembed.title : "제목을 불러오지 못했습니다",
+        channel: snippet && snippet.channelTitle ? snippet.channelTitle : oembed && oembed.author_name ? oembed.author_name : "채널명을 불러오지 못했습니다",
+        thumbnail: apiThumbnail && apiThumbnail.url ? apiThumbnail.url : oembed && oembed.thumbnail_url ? oembed.thumbnail_url : "https://img.youtube.com/vi/" + videoId + "/hqdefault.jpg",
+        duration: contentDetails ? formatDuration(contentDetails.duration) : "API 키 필요",
+        views: statistics ? formatNumber(statistics.viewCount) : "API 키 필요",
+        uploadDate: snippet ? formatDate(snippet.publishedAt) : "API 키 필요"
       };
     }
 
@@ -743,13 +804,17 @@
       detailTitle.textContent = info.title;
       detailChannel.textContent = info.channel;
       detailVideoId.textContent = info.id;
-      detailDuration.textContent = "YouTube Data API 연동 필요";
-      detailViews.textContent = "YouTube Data API 연동 필요";
-      detailUploadDate.textContent = "YouTube Data API 연동 필요";
+      detailDuration.textContent = info.duration;
+      detailViews.textContent = info.views;
+      detailUploadDate.textContent = info.uploadDate;
       detailUrl.textContent = info.url;
       officialLink.href = info.url;
       videoInfo.hidden = false;
     }
+
+    try {
+      youtubeApiKey.value = localStorage.getItem(YOUTUBE_API_KEY) || "";
+    } catch (e) {}
 
     openLottoBtn.addEventListener("click", () => {
       showView(lottoView);
@@ -784,10 +849,26 @@
         return;
       }
 
+      const apiKey = youtubeApiKey.value.trim();
+      if (apiKey) {
+        try {
+          localStorage.setItem(YOUTUBE_API_KEY, apiKey);
+        } catch (e) {}
+      }
+
       youtubeError.textContent = "영상 정보를 불러오는 중입니다.";
-      const oembed = await fetchYoutubeOembed("https://www.youtube.com/watch?v=" + videoId);
-      renderYoutubeInfo(buildYoutubeInfo(videoId, oembed));
-      youtubeError.textContent = oembed ? "" : "일부 정보는 불러오지 못해 기본 정보로 표시했습니다.";
+      const officialUrl = "https://www.youtube.com/watch?v=" + videoId;
+      const oembed = await fetchYoutubeOembed(officialUrl);
+      const apiItem = apiKey ? await fetchYoutubeData(videoId, apiKey) : null;
+
+      renderYoutubeInfo(buildYoutubeInfo(videoId, oembed, apiItem));
+      if (apiItem) {
+        youtubeError.textContent = "";
+      } else if (apiKey) {
+        youtubeError.textContent = "YouTube Data API 조회에 실패해 공개 정보만 표시했습니다. API 키와 제한 설정을 확인해 주세요.";
+      } else {
+        youtubeError.textContent = "API 키가 없어 길이, 조회수, 업로드 날짜는 표시하지 못했습니다.";
+      }
     });
 
     drawBtn.addEventListener("click", () => {
