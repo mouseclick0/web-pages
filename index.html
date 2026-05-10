@@ -110,10 +110,12 @@
       min-width: 0;
     }
 
-    .home-title {
-      margin: 0 0 0.75rem;
-      font-size: clamp(1.85rem, 8vw, 3rem);
-      line-height: 1.1;
+    .lotto-hero {
+      display: block;
+      width: min(100%, 17rem);
+      height: auto;
+      margin: 0 auto 1.1rem;
+      filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.22));
     }
 
     .home-subtitle {
@@ -316,7 +318,39 @@
 
   <main class="card home-card" id="homeView">
     <div class="card-head">
-      <h1 class="home-title">메인페이지</h1>
+      <svg class="lotto-hero" role="img" aria-label="로또 번호 공 이미지" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="ticketGradient" x1="42" y1="38" x2="244" y2="154" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#fff7d6" />
+            <stop offset="1" stop-color="#ffd166" />
+          </linearGradient>
+          <linearGradient id="blueBall" x1="150" y1="50" x2="238" y2="139" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#8fd3ff" />
+            <stop offset="1" stop-color="#2563c7" />
+          </linearGradient>
+          <linearGradient id="redBall" x1="70" y1="68" x2="152" y2="151" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#ffb3b3" />
+            <stop offset="1" stop-color="#d62828" />
+          </linearGradient>
+          <linearGradient id="greenBall" x1="202" y1="78" x2="278" y2="154" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#a7f3d0" />
+            <stop offset="1" stop-color="#2e7d32" />
+          </linearGradient>
+        </defs>
+        <rect x="50" y="42" width="178" height="94" rx="18" fill="url(#ticketGradient)" transform="rotate(-8 139 89)" />
+        <rect x="76" y="67" width="80" height="10" rx="5" fill="#f59e0b" opacity="0.8" transform="rotate(-8 116 72)" />
+        <rect x="78" y="89" width="126" height="8" rx="4" fill="#ffffff" opacity="0.7" transform="rotate(-8 141 93)" />
+        <rect x="82" y="109" width="84" height="8" rx="4" fill="#ffffff" opacity="0.7" transform="rotate(-8 124 113)" />
+        <circle cx="184" cy="95" r="47" fill="url(#blueBall)" />
+        <circle cx="184" cy="95" r="34" fill="none" stroke="#ffffff" stroke-width="8" opacity="0.9" />
+        <text x="184" y="107" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#ffffff">7</text>
+        <circle cx="108" cy="116" r="36" fill="url(#redBall)" />
+        <circle cx="108" cy="116" r="25" fill="none" stroke="#ffffff" stroke-width="7" opacity="0.9" />
+        <text x="108" y="126" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#ffffff">23</text>
+        <circle cx="247" cy="123" r="33" fill="url(#greenBall)" />
+        <circle cx="247" cy="123" r="23" fill="none" stroke="#ffffff" stroke-width="7" opacity="0.9" />
+        <text x="247" y="132" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#ffffff">45</text>
+      </svg>
     </div>
     <p class="home-subtitle">원하는 기능을 선택해 바로 실행하세요. 로또 번호 생성기는 6/45 번호를 한 번에 5게임까지 추천합니다.</p>
     <button type="button" class="entry-btn" id="openLottoBtn">로또 번호 생성기</button>
