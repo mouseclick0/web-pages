@@ -79,6 +79,10 @@
       transition: background-color 0.25s ease, color 0.2s ease;
     }
 
+    [hidden] {
+      display: none !important;
+    }
+
     .card {
       width: min(100%, 520px);
       background: var(--surface);
@@ -88,8 +92,11 @@
       transition: background-color 0.25s ease, box-shadow 0.25s ease;
     }
 
-    .card[hidden] {
-      display: none;
+    .home-grid {
+      width: min(100%, 1080px);
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.25rem;
     }
 
     .home-card {
@@ -110,7 +117,7 @@
       min-width: 0;
     }
 
-    .lotto-hero {
+    .feature-hero {
       display: block;
       width: min(100%, 17rem);
       height: auto;
@@ -124,6 +131,10 @@
       font-size: 0.95rem;
       color: var(--muted);
       line-height: 1.6;
+    }
+
+    .youtube-hero {
+      color: #ff0033;
     }
 
     .theme-toggle {
@@ -255,7 +266,10 @@
     }
 
     .draw-btn,
-    .entry-btn {
+    .entry-btn,
+    .youtube-check-btn,
+    .save-info-btn,
+    .official-link {
       width: 100%;
       border: none;
       border-radius: 12px;
@@ -271,14 +285,31 @@
     }
 
     .draw-btn:hover,
-    .entry-btn:hover {
+    .entry-btn:hover,
+    .youtube-check-btn:hover,
+    .save-info-btn:hover,
+    .official-link:hover {
       filter: brightness(1.06);
       box-shadow: 0 6px 28px var(--accent-glow);
     }
 
     .draw-btn:active,
-    .entry-btn:active {
+    .entry-btn:active,
+    .youtube-check-btn:active,
+    .save-info-btn:active,
+    .official-link:active {
       transform: scale(0.98);
+    }
+
+    .official-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+
+    .save-info-btn {
+      margin-top: 0.75rem;
     }
 
     .back-btn {
@@ -304,6 +335,100 @@
       transform: scale(0.98);
     }
 
+    .youtube-form {
+      display: grid;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .url-input,
+    .quality-select {
+      width: 100%;
+      border: 1px solid var(--toggle-border);
+      border-radius: 12px;
+      padding: 0.9rem 1rem;
+      font: inherit;
+      color: var(--text);
+      background: var(--toggle-bg);
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .url-input:focus,
+    .quality-select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .video-info {
+      display: grid;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .video-card {
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      background: var(--toggle-bg);
+    }
+
+    .video-thumb {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      background: rgba(0, 0, 0, 0.15);
+    }
+
+    .video-meta {
+      padding: 1rem;
+    }
+
+    .video-meta h2 {
+      margin: 0 0 0.45rem;
+      font-size: 1rem;
+    }
+
+    .video-meta p,
+    .download-note {
+      margin: 0;
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .download-options {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .field-label {
+      display: grid;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .error {
+      min-height: 1.25rem;
+      margin: -0.25rem 0 0;
+      font-size: 0.8rem;
+      color: #ff8a8a;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 760px) {
+      body {
+        align-items: flex-start;
+        padding-top: 4.5rem;
+      }
+
+      .home-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .hint {
       margin-top: 1.25rem;
       font-size: 0.75rem;
@@ -316,44 +441,59 @@
 <body>
   <button type="button" class="theme-toggle" id="themeToggle" aria-label="화이트 모드로 전환">화이트 모드</button>
 
-  <main class="card home-card" id="homeView">
-    <div class="card-head">
-      <svg class="lotto-hero" role="img" aria-label="로또 번호 공 이미지" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="ticketGradient" x1="42" y1="38" x2="244" y2="154" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#fff7d6" />
-            <stop offset="1" stop-color="#ffd166" />
-          </linearGradient>
-          <linearGradient id="blueBall" x1="150" y1="50" x2="238" y2="139" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#8fd3ff" />
-            <stop offset="1" stop-color="#2563c7" />
-          </linearGradient>
-          <linearGradient id="redBall" x1="70" y1="68" x2="152" y2="151" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#ffb3b3" />
-            <stop offset="1" stop-color="#d62828" />
-          </linearGradient>
-          <linearGradient id="greenBall" x1="202" y1="78" x2="278" y2="154" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#a7f3d0" />
-            <stop offset="1" stop-color="#2e7d32" />
-          </linearGradient>
-        </defs>
-        <rect x="50" y="42" width="178" height="94" rx="18" fill="url(#ticketGradient)" transform="rotate(-8 139 89)" />
-        <rect x="76" y="67" width="80" height="10" rx="5" fill="#f59e0b" opacity="0.8" transform="rotate(-8 116 72)" />
-        <rect x="78" y="89" width="126" height="8" rx="4" fill="#ffffff" opacity="0.7" transform="rotate(-8 141 93)" />
-        <rect x="82" y="109" width="84" height="8" rx="4" fill="#ffffff" opacity="0.7" transform="rotate(-8 124 113)" />
-        <circle cx="184" cy="95" r="47" fill="url(#blueBall)" />
-        <circle cx="184" cy="95" r="34" fill="none" stroke="#ffffff" stroke-width="8" opacity="0.9" />
-        <text x="184" y="107" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#ffffff">7</text>
-        <circle cx="108" cy="116" r="36" fill="url(#redBall)" />
-        <circle cx="108" cy="116" r="25" fill="none" stroke="#ffffff" stroke-width="7" opacity="0.9" />
-        <text x="108" y="126" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#ffffff">23</text>
-        <circle cx="247" cy="123" r="33" fill="url(#greenBall)" />
-        <circle cx="247" cy="123" r="23" fill="none" stroke="#ffffff" stroke-width="7" opacity="0.9" />
-        <text x="247" y="132" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#ffffff">45</text>
-      </svg>
-    </div>
-    <p class="home-subtitle">원하는 기능을 선택해 바로 실행하세요. 로또 번호 생성기는 6/45 번호를 한 번에 5게임까지 추천합니다.</p>
-    <button type="button" class="entry-btn" id="openLottoBtn">로또 번호 생성기</button>
+  <main class="home-grid" id="homeView">
+    <section class="card home-card">
+      <div class="card-head">
+        <svg class="feature-hero" role="img" aria-label="로또 번호 공 이미지" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="ticketGradient" x1="42" y1="38" x2="244" y2="154" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#fff7d6" />
+              <stop offset="1" stop-color="#ffd166" />
+            </linearGradient>
+            <linearGradient id="blueBall" x1="150" y1="50" x2="238" y2="139" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#8fd3ff" />
+              <stop offset="1" stop-color="#2563c7" />
+            </linearGradient>
+            <linearGradient id="redBall" x1="70" y1="68" x2="152" y2="151" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#ffb3b3" />
+              <stop offset="1" stop-color="#d62828" />
+            </linearGradient>
+            <linearGradient id="greenBall" x1="202" y1="78" x2="278" y2="154" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#a7f3d0" />
+              <stop offset="1" stop-color="#2e7d32" />
+            </linearGradient>
+          </defs>
+          <rect x="50" y="42" width="178" height="94" rx="18" fill="url(#ticketGradient)" transform="rotate(-8 139 89)" />
+          <rect x="76" y="67" width="80" height="10" rx="5" fill="#f59e0b" opacity="0.8" transform="rotate(-8 116 72)" />
+          <rect x="78" y="89" width="126" height="8" rx="4" fill="#ffffff" opacity="0.7" transform="rotate(-8 141 93)" />
+          <rect x="82" y="109" width="84" height="8" rx="4" fill="#ffffff" opacity="0.7" transform="rotate(-8 124 113)" />
+          <circle cx="184" cy="95" r="47" fill="url(#blueBall)" />
+          <circle cx="184" cy="95" r="34" fill="none" stroke="#ffffff" stroke-width="8" opacity="0.9" />
+          <text x="184" y="107" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#ffffff">7</text>
+          <circle cx="108" cy="116" r="36" fill="url(#redBall)" />
+          <circle cx="108" cy="116" r="25" fill="none" stroke="#ffffff" stroke-width="7" opacity="0.9" />
+          <text x="108" y="126" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#ffffff">23</text>
+          <circle cx="247" cy="123" r="33" fill="url(#greenBall)" />
+          <circle cx="247" cy="123" r="23" fill="none" stroke="#ffffff" stroke-width="7" opacity="0.9" />
+          <text x="247" y="132" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#ffffff">45</text>
+        </svg>
+      </div>
+      <p class="home-subtitle">6/45 로또 번호를 한 번에 5게임까지 추천합니다.</p>
+      <button type="button" class="entry-btn" id="openLottoBtn">로또 번호 생성기</button>
+    </section>
+
+    <section class="card home-card">
+      <div class="card-head">
+        <svg class="feature-hero youtube-hero" role="img" aria-label="유튜브 동영상 아이콘" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+          <rect x="46" y="38" width="228" height="126" rx="30" fill="currentColor" />
+          <path d="M141 74l58 33-58 33V74z" fill="#ffffff" />
+          <circle cx="74" cy="54" r="16" fill="#ffffff" opacity="0.16" />
+          <circle cx="250" cy="142" r="20" fill="#000000" opacity="0.12" />
+        </svg>
+      </div>
+      <p class="home-subtitle">유튜브 URL을 확인하고 영상 정보와 저장용 메모를 준비합니다.</p>
+      <button type="button" class="entry-btn" id="openYoutubeBtn">유튜브 동영상 다운로드</button>
+    </section>
   </main>
 
   <main class="card" id="lottoView" hidden>
@@ -370,6 +510,48 @@
     <button type="button" class="back-btn" id="backHomeBtn">메인페이지로 돌아가기</button>
 
     <p class="hint">이 페이지는 참고용이며, 당첨을 보장하지 않습니다.</p>
+  </main>
+
+  <main class="card" id="youtubeView" hidden>
+    <div class="card-head">
+      <h1>유튜브 동영상 다운로드</h1>
+    </div>
+    <p class="subtitle">유튜브 URL을 입력하면 영상 ID, 썸네일, 공식 페이지 링크를 확인할 수 있습니다.</p>
+
+    <form class="youtube-form" id="youtubeForm">
+      <label class="field-label" for="youtubeUrl">
+        유튜브 URL
+        <input class="url-input" id="youtubeUrl" type="url" placeholder="https://www.youtube.com/watch?v=..." autocomplete="url" required />
+      </label>
+      <button type="submit" class="youtube-check-btn">확인</button>
+      <p class="error" id="youtubeError" aria-live="polite"></p>
+    </form>
+
+    <div class="video-info" id="videoInfo" hidden>
+      <article class="video-card">
+        <img class="video-thumb" id="videoThumb" alt="유튜브 동영상 썸네일" />
+        <div class="video-meta">
+          <h2 id="videoTitle">유튜브 영상 정보</h2>
+          <p id="videoDesc"></p>
+        </div>
+      </article>
+
+      <div class="download-options">
+        <label class="field-label" for="qualitySelect">
+          용량별 선택
+          <select class="quality-select" id="qualitySelect">
+            <option value="low">저용량 - 모바일 확인용</option>
+            <option value="medium">중간 용량 - 일반 확인용</option>
+            <option value="high">고용량 - 원본 페이지 확인용</option>
+          </select>
+        </label>
+        <a class="official-link" id="officialLink" href="#" target="_blank" rel="noopener noreferrer">공식 YouTube에서 열기</a>
+        <button type="button" class="save-info-btn" id="saveInfoBtn">저장폴더 선택 후 정보 저장</button>
+        <p class="download-note">정적 웹페이지에서는 YouTube 영상 파일을 직접 다운로드할 수 없습니다. 권한이 있는 영상은 YouTube의 공식 기능을 이용해 저장하세요.</p>
+      </div>
+    </div>
+
+    <button type="button" class="back-btn" id="backHomeFromYoutubeBtn">메인페이지로 돌아가기</button>
   </main>
 
   <script>
@@ -425,23 +607,155 @@
 
     const homeView = document.getElementById("homeView");
     const lottoView = document.getElementById("lottoView");
+    const youtubeView = document.getElementById("youtubeView");
     const openLottoBtn = document.getElementById("openLottoBtn");
+    const openYoutubeBtn = document.getElementById("openYoutubeBtn");
     const backHomeBtn = document.getElementById("backHomeBtn");
+    const backHomeFromYoutubeBtn = document.getElementById("backHomeFromYoutubeBtn");
     const resultsEl = document.getElementById("results");
     const drawBtn = document.getElementById("drawBtn");
+    const youtubeForm = document.getElementById("youtubeForm");
+    const youtubeUrl = document.getElementById("youtubeUrl");
+    const youtubeError = document.getElementById("youtubeError");
+    const videoInfo = document.getElementById("videoInfo");
+    const videoThumb = document.getElementById("videoThumb");
+    const videoTitle = document.getElementById("videoTitle");
+    const videoDesc = document.getElementById("videoDesc");
+    const qualitySelect = document.getElementById("qualitySelect");
+    const officialLink = document.getElementById("officialLink");
+    const saveInfoBtn = document.getElementById("saveInfoBtn");
 
     const GAME_COUNT = 5;
+    let currentYoutubeVideo = null;
+
+    function showView(view) {
+      homeView.hidden = view !== homeView;
+      lottoView.hidden = view !== lottoView;
+      youtubeView.hidden = view !== youtubeView;
+    }
+
+    function extractYoutubeId(value) {
+      try {
+        const url = new URL(value.trim());
+        const host = url.hostname.replace(/^www\./, "");
+
+        if (host === "youtu.be") {
+          return url.pathname.split("/").filter(Boolean)[0] || null;
+        }
+
+        if (host === "youtube.com" || host === "m.youtube.com" || host === "music.youtube.com") {
+          if (url.pathname === "/watch") return url.searchParams.get("v");
+          if (url.pathname.startsWith("/shorts/") || url.pathname.startsWith("/embed/")) {
+            return url.pathname.split("/").filter(Boolean)[1] || null;
+          }
+        }
+      } catch (e) {
+        return null;
+      }
+
+      return null;
+    }
+
+    function buildYoutubeInfo(videoId) {
+      const officialUrl = "https://www.youtube.com/watch?v=" + videoId;
+
+      return {
+        id: videoId,
+        url: officialUrl,
+        thumbnail: "https://img.youtube.com/vi/" + videoId + "/hqdefault.jpg"
+      };
+    }
+
+    function renderYoutubeInfo(info) {
+      currentYoutubeVideo = info;
+      videoThumb.src = info.thumbnail;
+      videoTitle.textContent = "유튜브 영상 정보";
+      videoDesc.textContent = "영상 ID: " + info.id + " · 선택한 용량 옵션에 맞춰 공식 페이지에서 확인하거나 아래 버튼으로 정보를 저장할 수 있습니다.";
+      officialLink.href = info.url;
+      videoInfo.hidden = false;
+    }
+
+    function youtubeInfoText() {
+      const selectedOption = qualitySelect.options[qualitySelect.selectedIndex].textContent;
+
+      return [
+        "유튜브 영상 정보",
+        "영상 ID: " + currentYoutubeVideo.id,
+        "공식 URL: " + currentYoutubeVideo.url,
+        "선택 옵션: " + selectedOption,
+        "",
+        "정적 웹페이지에서는 YouTube 영상 파일을 직접 다운로드할 수 없습니다.",
+        "권한이 있는 영상은 YouTube의 공식 저장 기능을 이용하세요."
+      ].join("\n");
+    }
 
     openLottoBtn.addEventListener("click", () => {
-      homeView.hidden = true;
-      lottoView.hidden = false;
+      showView(lottoView);
       drawBtn.focus();
     });
 
     backHomeBtn.addEventListener("click", () => {
-      lottoView.hidden = true;
-      homeView.hidden = false;
+      showView(homeView);
       openLottoBtn.focus();
+    });
+
+    openYoutubeBtn.addEventListener("click", () => {
+      showView(youtubeView);
+      youtubeUrl.focus();
+    });
+
+    backHomeFromYoutubeBtn.addEventListener("click", () => {
+      showView(homeView);
+      openYoutubeBtn.focus();
+    });
+
+    youtubeForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      youtubeError.textContent = "";
+
+      const videoId = extractYoutubeId(youtubeUrl.value);
+      if (!videoId) {
+        videoInfo.hidden = true;
+        currentYoutubeVideo = null;
+        youtubeError.textContent = "올바른 유튜브 URL을 입력해 주세요.";
+        youtubeUrl.focus();
+        return;
+      }
+
+      renderYoutubeInfo(buildYoutubeInfo(videoId));
+    });
+
+    saveInfoBtn.addEventListener("click", async () => {
+      if (!currentYoutubeVideo) return;
+
+      const contents = youtubeInfoText();
+      const fileName = "youtube-" + currentYoutubeVideo.id + "-info.txt";
+
+      try {
+        if (window.showSaveFilePicker) {
+          const handle = await window.showSaveFilePicker({
+            suggestedName: fileName,
+            types: [{
+              description: "Text file",
+              accept: { "text/plain": [".txt"] }
+            }]
+          });
+          const writable = await handle.createWritable();
+          await writable.write(contents);
+          await writable.close();
+          return;
+        }
+      } catch (e) {
+        if (e && e.name === "AbortError") return;
+      }
+
+      const blob = new Blob([contents], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = fileName;
+      a.click();
+      URL.revokeObjectURL(url);
     });
 
     drawBtn.addEventListener("click", () => {
